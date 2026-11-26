@@ -88,7 +88,8 @@ client/src/
     # Self-contained action buttons (no props; each opens its own flow): UploadButton, CreateCollectionButton (+ its private CreateCollectionDialog/)
   features/                  # one folder per feature; every component in it has its own subfolder (shelf/BookCard/BookCard.tsx)
     auth/                    # AuthPage, AuthForm, PasswordField, AuthModeSwitch, ResetPasswordHint, RequireAuth, GuestOnly
-    shelf/                   # ShelfPage, BookCard, BookCardMenu ("…" on the cover → Delete), CollectionsSection, CollectionCard, CollectionCoverMosaic, DropOverlay
+    shelf/                   # ShelfPage (Pinned, then Your Collections, then Your Shelf with every book, pinned ones too),
+                             # PinnedSection, BookCard, BookCardMenu ("…" on the cover → Pin/Unpin, Delete), CollectionsSection, CollectionCard, CollectionCoverMosaic, DropOverlay
     book/                    # BookPage
     collections/             # CollectionPage, CollectionActions, CollectionBookTabs, CollectionBookPanel, EditCollectionDialog, BackToShelfLink
     admin/                   # AdminPage (/admin, lazy-loaded): a Firestore-console layout, AdminBreadcrumbs over three Panes:

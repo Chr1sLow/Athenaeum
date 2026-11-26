@@ -241,6 +241,31 @@ describe('books API', async () => {
     });
   });
 
+  describe('PUT /api/books/:id/pin', () => {
+    const shelfEntry = async (id: string) => (await get('/api/books')).json<BookSummary[]>().find((b) => b.id === id)!;
+
+    it('starts unpinned', async () => {
+      const book = await uploadEpub();
+      expect(book.pinned).toBe(false);
+      expect((await shelfEntry(book.id)).pinned).toBe(false);
+    });
+
+    it('pins and unpins a book, shown on the shelf and the book page', async () => {
+      const book = await uploadEpub();
+      expect((await put(`/api/books/${book.id}/pin`, { pinned: true })).statusCode).toBe(204);
+      expect((await shelfEntry(book.id)).pinned).toBe(true);
+      expect((await get(`/api/books/${book.id}`)).json<BookDetail>().pinned).toBe(true);
+
+      expect((await put(`/api/books/${book.id}/pin`, { pinned: false })).statusCode).toBe(204);
+      expect((await shelfEntry(book.id)).pinned).toBe(false);
+    });
+
+    it.each([[{}], [{ pinned: 'yes' }]])('rejects an invalid body (%o) with 400', async (body) => {
+      const book = await uploadEpub();
+      expect((await put(`/api/books/${book.id}/pin`, body)).statusCode).toBe(400);
+    });
+  });
+
   describe('DELETE /api/books/:id', () => {
     it('removes the book and everything stored with it', async () => {
       const book = await uploadEpub();
@@ -277,16 +302,19 @@ describe('books API', async () => {
       ['GET', `/images/IMAGE`],
       ['PUT', '/progress'],
       ['PUT', '/chapters/0/read'],
+      ['PUT', '/pin'],
       ['DELETE', ''],
     ])('return 404 for %s /api/books/:id%s', async (method, suffix) => {
       const url = `/api/books/${book.id}${suffix.replace('IMAGE', imageId)}`;
-      const payload = method === 'PUT' ? { chapterIndex: 0, blockIndex: 0, percent: 0, read: true } : undefined;
+      const payload = method === 'PUT' ? { chapterIndex: 0, blockIndex: 0, percent: 0, read: true, pinned: true } : undefined;
       const res = await app.inject({ method: method as 'GET', url, headers: withSession(other), payload });
       expect(res.statusCode).toBe(404);
     });
 
     it('stay untouched after those attempts', async () => {
-      expect((await get(`/api/books/${book.id}`)).statusCode).toBe(200);
+      const res = await get(`/api/books/${book.id}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.json<BookDetail>().pinned).toBe(false);
       expect((await get(`/api/books/${book.id}/progress`)).json()).toBeNull();
     });
 

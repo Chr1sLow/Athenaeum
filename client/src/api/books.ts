@@ -53,14 +53,16 @@ export function useMarkRead(id: string) {
   });
 }
 
-/** Pins or unpins a book for a user */
+/** Pins or unpins a book: pinned books also show in the "Pinned" section at the top of the shelf. */
 export function usePinBook(id: string) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ pinned }: { pinned: boolean }) => api<void>(`/books/${id}/pin`, { method: 'PUT', json: { pinned } }),
     onSuccess: (_data, { pinned }) => {
-      qc.setQueryData<BookDetail>(bookKey(id), (old) => old ? { ...old, pinned } : old);
-      qc.invalidateQueries({ queryKey: BOOKS_KEY });
+      qc.setQueryData<BookDetail>(bookKey(id), (old) => (old ? { ...old, pinned } : old));
+      // Move it in or out of the Pinned section right away, then confirm with the server.
+      qc.setQueryData<BookSummary[]>(BOOKS_KEY, (old) => old?.map((b) => (b.id === id ? { ...b, pinned } : b)));
+      return qc.invalidateQueries({ queryKey: BOOKS_KEY });
     },
   });
 }

@@ -138,3 +138,82 @@ describe('deleting a book', () => {
     expect(screen.getByRole('heading', { name: 'The Lantern Road' })).toBeInTheDocument();
   });
 });
+
+describe('pinned books', () => {
+  const shelfRegion = () => screen.getByRole('region', { name: 'Your Shelf' });
+  const pinnedRegion = () => screen.getByRole('region', { name: 'Pinned' });
+  const titlesIn = (region: HTMLElement) => within(region).getAllByRole('article').map((card) => within(card).getByRole('heading').textContent);
+
+  /** Three books, newest-read first. `PUT /books/:id/pin` updates the server state. */
+  function pinApi(pinned: string[] = []) {
+    let shelf: BookSummary[] = [
+      summary({ id: 'b1', title: 'The Lantern Road' }),
+      summary({ id: 'b2', title: 'Paper Moons' }),
+      summary({ id: 'b3', title: 'Salt and Ember' }),
+    ].map((b) => ({ ...b, pinned: pinned.includes(b.id) }));
+    const pin =
+      (id: string) =>
+      ({ body }: { body: unknown }) => {
+        const { pinned: value } = body as { pinned: boolean };
+        shelf = shelf.map((b) => (b.id === id ? { ...b, pinned: value } : b));
+        return { status: 204 };
+      };
+    return mockSignedIn({
+      'GET /books': () => ({ status: 200, body: shelf }),
+      'PUT /books/b1/pin': pin('b1'),
+      'PUT /books/b2/pin': pin('b2'),
+      'PUT /books/b3/pin': pin('b3'),
+    });
+  }
+
+  it('lists pinned books in a section above the collections', async () => {
+    pinApi(['b3']);
+    renderApp('/');
+    const pinned = await screen.findByRole('region', { name: 'Pinned' });
+    await within(pinned).findByRole('article');
+    expect(titlesIn(pinned)).toEqual(['Salt and Ember']);
+
+    const collections = screen.getByRole('region', { name: 'Your Collections' });
+    expect(pinned.compareDocumentPosition(collections) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it('keeps pinned books on the shelf, in its usual order', async () => {
+    pinApi(['b3']);
+    renderApp('/');
+    await screen.findAllByRole('article');
+    expect(titlesIn(shelfRegion())).toEqual(['The Lantern Road', 'Paper Moons', 'Salt and Ember']);
+  });
+
+  it('keeps the section with a hint when nothing is pinned', async () => {
+    pinApi();
+    renderApp('/');
+    await screen.findAllByRole('article');
+    expect(within(pinnedRegion()).queryByRole('article')).not.toBeInTheDocument();
+    expect(within(pinnedRegion()).getByText(/Pin your favourite novels/)).toBeInTheDocument();
+  });
+
+  it('adds a book to the section when you pin it from the shelf', async () => {
+    const api = pinApi();
+    renderApp('/');
+    await screen.findAllByRole('article');
+    await userEvent.click(within(shelfRegion()).getByRole('button', { name: 'Options for Paper Moons' }));
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Pin' }));
+
+    expect(callsTo(api, 'PUT /books/b2/pin')).toEqual([{ pinned: true }]);
+    await waitFor(() => expect(titlesIn(pinnedRegion())).toEqual(['Paper Moons']));
+    expect(within(pinnedRegion()).queryByText(/Pin your favourite novels/)).not.toBeInTheDocument();
+    expect(titlesIn(shelfRegion())).toEqual(['The Lantern Road', 'Paper Moons', 'Salt and Ember']);
+  });
+
+  it('takes a book out of the section when you unpin it there, leaving it on the shelf', async () => {
+    const api = pinApi(['b1', 'b3']);
+    renderApp('/');
+    await within(await screen.findByRole('region', { name: 'Pinned' })).findAllByRole('article');
+    await userEvent.click(within(pinnedRegion()).getByRole('button', { name: 'Options for The Lantern Road' }));
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Unpin' }));
+
+    expect(callsTo(api, 'PUT /books/b1/pin')).toEqual([{ pinned: false }]);
+    await waitFor(() => expect(titlesIn(pinnedRegion())).toEqual(['Salt and Ember']));
+    expect(titlesIn(shelfRegion())).toEqual(['The Lantern Road', 'Paper Moons', 'Salt and Ember']);
+  });
+});

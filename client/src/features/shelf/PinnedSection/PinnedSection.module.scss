@@ -1,0 +1,11 @@
+.section {
+  margin-bottom: 36px;
+
+  .hint {
+    margin: 0;
+    padding: 18px 20px;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    color: var(--text-muted);
+  }
+}

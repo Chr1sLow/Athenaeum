@@ -7,7 +7,7 @@ export interface BookCardMenuProps {
   book: Pick<BookSummary, 'id' | 'title' | 'pinned'>;
 }
 
-/** The "…" on a shelf card's cover. Its one action, Delete, asks first. */
+/** The "…" on a shelf card's cover: Pin/Unpin (the Pinned section above the collections), and Delete, which asks first. */
 export function BookCardMenu({ book }: BookCardMenuProps) {
   const remove = useDeleteBook(book.id);
   const pin = usePinBook(book.id);
@@ -21,7 +21,7 @@ export function BookCardMenu({ book }: BookCardMenuProps) {
 
   const handlePin = () => {
     pin.mutate({ pinned: !book.pinned });
-  }
+  };
 
   const items: MenuItem[] = [
     {

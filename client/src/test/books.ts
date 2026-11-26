@@ -14,6 +14,7 @@ export function summary(over: Partial<BookSummary> = {}): BookSummary {
     chapterIndex: 0,
     addedAt: '2026-11-22T10:00:00.000Z',
     lastReadAt: null,
+    pinned: false,
     ...over,
   };
 }
