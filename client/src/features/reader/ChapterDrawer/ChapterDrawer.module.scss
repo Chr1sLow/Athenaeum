@@ -1,0 +1,70 @@
+@use '../../../styles/mixins' as *;
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgb(0 0 0 / 0.35);
+}
+
+// Uses the site's colors, not the reader theme's.
+.drawer {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 21;
+  display: flex;
+  flex-direction: column;
+  width: min(360px, calc(100vw - 24px));
+  padding: 16px 12px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-sunken);
+  color: var(--text);
+  font-family: var(--font-ui);
+  box-shadow: 0 20px 48px rgb(0 0 0 / 0.45);
+  animation: slide-in 160ms var(--ease);
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 4px;
+
+  h2 {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+}
+
+.sub {
+  margin: 4px 4px 12px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+@include reduced-motion {
+  .drawer {
+    animation: none;
+  }
+}

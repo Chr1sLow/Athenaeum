@@ -1,0 +1,34 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 4px 0 8px;
+  list-style: none;
+}
+
+// Portrait-shaped tiles; wide pictures are cropped to fit and shown whole when opened.
+.thumb {
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  cursor: zoom-in;
+  aspect-ratio: 3 / 4;
+  transition: transform 120ms var(--ease), border-color 120ms var(--ease);
+
+  &:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

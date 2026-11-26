@@ -1,0 +1,27 @@
+.null {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.bare {
+  font-variant-numeric: tabular-nums;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.json {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.link {
+  color: var(--accent-hover);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

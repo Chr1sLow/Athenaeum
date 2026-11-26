@@ -1,0 +1,90 @@
+@use '../../styles/mixins' as *;
+
+.root {
+  position: relative;
+}
+
+.trigger {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  transition: background 120ms var(--ease);
+
+  &:hover,
+  &[aria-expanded='true'] {
+    background: var(--surface);
+    color: var(--text-strong);
+  }
+
+  // Dark and round, so it stays visible over any cover.
+  &.overlay {
+    background: var(--overlay);
+    color: var(--text-strong);
+  }
+
+  &.overlay:hover,
+  &.overlay[aria-expanded='true'] {
+    background: var(--overlay-strong);
+  }
+}
+
+.triggerIcon {
+  display: grid;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  min-width: 160px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-sunken);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.4);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  text-align: left;
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    background: var(--surface);
+    color: var(--text-strong);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &.danger {
+    color: var(--danger-text);
+  }
+
+  &.danger:hover:not(:disabled),
+  &.danger:focus-visible {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+  }
+}
+
+.itemIcon {
+  display: grid;
+}

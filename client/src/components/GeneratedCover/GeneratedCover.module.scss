@@ -1,0 +1,48 @@
+.cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: var(--cover-text);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-align: center;
+}
+
+.title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+.large {
+  gap: 14px;
+  // The bottom padding keeps the title clear of the format chips on cover cards.
+  padding: 18px 14px 34px;
+
+  .title {
+    font-size: 19px;
+    line-height: 1.2;
+    -webkit-line-clamp: 5;
+  }
+}
+
+.small {
+  padding: 6px;
+  color: var(--tile-text);
+
+  .title {
+    font-size: 13px;
+    line-height: 1.2;
+    -webkit-line-clamp: 4;
+  }
+}
+
+.rule {
+  width: 32px;
+  height: 1px;
+  background: rgb(244 239 230 / 0.45);
+}

@@ -1,0 +1,22 @@
+.close {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+
+  &:hover {
+    background: var(--surface);
+    color: var(--text-strong);
+  }
+}
+
+.small {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}

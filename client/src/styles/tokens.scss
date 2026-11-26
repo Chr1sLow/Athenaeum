@@ -1,0 +1,49 @@
+// Site design tokens, measured from atsu.moe (2026-11-22). Components use these, never raw hex.
+// They are CSS variables (not Sass variables) because the reader switches them at runtime.
+:root {
+  --font-ui: 'Geist Variable', 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  --font-mono: ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, monospace;
+
+  --bg: #1d1e20;
+  --surface: #313234;
+  --surface-hover: #3a3b3e;
+  --surface-sunken: #26272a;
+  --border: #36373a;
+  --text: #b8bcc0;
+  --text-strong: #f9f8f6;
+  --text-muted: #85898e;
+  --accent: #7765e3;
+  --accent-hover: #8676ea;
+  --accent-contrast: #ffffff;
+  --danger: #e5484d;
+  --danger-bg: #3a1d20;
+  --danger-text: #ff9592;
+  --warning-bg: #3b2f17;
+  --warning-text: #f1c875;
+  --success-text: #7fd1a0;
+
+  // Generated covers and collection tiles (books without a cover image; the background is computed from the title).
+  --cover-text: #f4efe6;
+  --tile-text: #e9e4f5;
+
+  // Dark see-through fill for chips and buttons drawn on top of covers.
+  --overlay: rgb(20 20 22 / 0.85);
+  --overlay-strong: rgb(20 20 22 / 0.95);
+
+  // Format chips on cover cards, like atsu's Manga / Manhwa / Novel chips.
+  --chip-text: #ffffff;
+  --format-epub: #7765e3;
+  --format-pdf: #d9661f;
+  --format-docx: #2f7fd6;
+  --format-txt: #3d8f6a;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --nav-height: 80px;
+  --wrapper: 1200px;
+  --gutter: 20px;
+
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}

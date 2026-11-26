@@ -1,0 +1,35 @@
+.mosaic {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 3px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+
+  > * {
+    min-height: 0;
+  }
+
+  // Fewer than four covers: let them take the spare cells.
+  &[data-count='1'] > * {
+    grid-row: span 2;
+    grid-column: span 2;
+  }
+
+  &[data-count='2'] > * {
+    grid-row: span 2;
+  }
+
+  &[data-count='3'] > :first-child {
+    grid-row: span 2;
+  }
+}
+
+.empty {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  place-items: center;
+  color: var(--text-muted);
+}

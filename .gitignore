@@ -1,0 +1,23 @@
+node_modules/
+dist/
+coverage/
+.vite/
+*.tsbuildinfo
+*.timestamp-*.mjs
+*.log
+*.local
+
+# Secrets: only the example file is committed
+.env
+.env.*
+!.env.example
+
+# Database dumps from npm run db:backup
+backups/
+
+# Claude Code: CLAUDE.md is shared, personal settings are not
+.claude/settings.local.json
+.playwright-mcp/
+
+.DS_Store
+Thumbs.db

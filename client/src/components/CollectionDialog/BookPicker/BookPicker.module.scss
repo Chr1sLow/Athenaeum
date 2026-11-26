@@ -1,0 +1,40 @@
+@use '../../../styles/mixins' as *;
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.label {
+  @include eyebrow;
+}
+
+.count {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
+  max-height: 340px;
+  margin: 4px 0 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.none {
+  padding: 16px 0;
+  color: var(--text-muted);
+  text-align: center;
+}

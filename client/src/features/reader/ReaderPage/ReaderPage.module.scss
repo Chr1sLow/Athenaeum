@@ -1,0 +1,19 @@
+// The reader page: themed background, one centered column. Every typographic value comes from a
+// --r-* variable set by readerStyle().
+.reader {
+  --skeleton-from: color-mix(in srgb, var(--r-surface) 50%, transparent);
+
+  min-height: 100vh;
+  padding: 0 20px 96px;
+  background: var(--r-bg);
+  color: var(--r-text);
+  transition:
+    background 200ms ease,
+    color 200ms ease;
+}
+
+.column {
+  max-width: var(--r-measure);
+  margin: 0 auto;
+  padding-top: 48px;
+}

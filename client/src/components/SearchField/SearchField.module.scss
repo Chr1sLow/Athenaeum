@@ -1,0 +1,67 @@
+@use '../../styles/mixins' as *;
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: text;
+
+  &:focus-within {
+    box-shadow: var(--focus-ring);
+  }
+
+  input {
+    @include bare-input;
+
+    &:focus,
+    &:focus-visible {
+      outline: none;
+      box-shadow: none;
+    }
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+  }
+}
+
+.large {
+  gap: 10px;
+  height: 48px;
+  padding: 0 8px 0 16px;
+  border-radius: var(--radius);
+
+  input {
+    font-size: 18px;
+  }
+}
+
+.kbd {
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: var(--surface-sunken);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12px;
+}
+
+@include below(lg) {
+  .large {
+    height: 42px;
+  }
+
+  .kbd {
+    display: none;
+  }
+}

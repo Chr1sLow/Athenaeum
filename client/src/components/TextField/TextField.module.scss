@@ -1,0 +1,48 @@
+@use '../../styles/mixins' as *;
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  @include eyebrow;
+}
+
+.control {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  // border: 1px solid var(--border);
+  // border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-strong);
+  font-size: 16px;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .hasTrailing & {
+    padding-right: 46px;
+  }
+}
+
+.trailing {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: grid;
+  transform: translateY(-50%);
+}
+
+.hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}

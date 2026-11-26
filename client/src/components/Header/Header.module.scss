@@ -1,0 +1,67 @@
+@use '../../styles/mixins' as *;
+
+.header {
+  height: var(--nav-height);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 100%;
+}
+
+.logo {
+  flex-shrink: 0;
+  color: var(--text-strong);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+// Grows up to 340px, but shrinks first on narrow screens so the account button stays visible.
+.search {
+  flex: 0 1 340px;
+  min-width: 0;
+  margin: 0 auto;
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 16px;
+}
+
+.pushRight {
+  margin-left: auto;
+}
+
+.textLink {
+  color: var(--text-strong);
+  font-size: 16px;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+
+  &:hover {
+    color: var(--accent-hover);
+  }
+}
+
+@include below(lg) {
+  .inner {
+    gap: 12px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .actions {
+    gap: 10px;
+  }
+}

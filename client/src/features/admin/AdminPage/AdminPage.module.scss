@@ -1,0 +1,27 @@
+@use '../../../styles/mixins' as *;
+
+.page {
+  display: grid;
+  // Without this, a long row id stretches the column past the screen on phones.
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  padding-top: 8px;
+}
+
+// Three columns side by side, filling the screen under the header; each pane scrolls on its own.
+.console {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(0, 1fr) minmax(0, 1.4fr);
+  height: max(480px, calc(100dvh - var(--nav-height) - 140px));
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+@include below(lg) {
+  // One pane at a time; the breadcrumb trail is the way back.
+  .console {
+    grid-template-columns: minmax(0, 1fr);
+    height: max(420px, calc(100dvh - var(--nav-height) - 120px));
+  }
+}

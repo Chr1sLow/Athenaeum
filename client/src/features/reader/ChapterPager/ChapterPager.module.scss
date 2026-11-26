@@ -1,0 +1,50 @@
+@use '../../../styles/mixins' as *;
+
+.pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid color-mix(in srgb, var(--r-muted) 35%, transparent);
+  font-family: var(--font-ui);
+  letter-spacing: 0;
+}
+
+.card {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--r-surface);
+  color: var(--r-heading);
+  text-decoration: none;
+  transition: filter 120ms ease;
+
+  &:hover {
+    filter: brightness(1.15);
+  }
+}
+
+.next {
+  grid-column: 2;
+  text-align: right;
+
+  .label {
+    justify-content: flex-end;
+  }
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--r-muted);
+  font-size: 12px;
+}
+
+.title {
+  @include ellipsis;
+  font-size: 15px;
+  line-height: 1.3;
+}

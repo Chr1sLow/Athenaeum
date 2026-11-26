@@ -1,0 +1,57 @@
+@use '../../../styles/mixins' as *;
+
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  place-items: center;
+  gap: 12px;
+  padding: 56px 16px 16px;
+  outline: none;
+  // Dark and blurred, so the text behind doesn't show around the picture.
+  background: rgb(0 0 0 / 0.94);
+  backdrop-filter: blur(8px);
+  animation: fade 120ms ease;
+}
+
+.image {
+  max-width: min(100%, 1100px);
+  max-height: 100%;
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 24px 64px rgb(0 0 0 / 0.6);
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.counter {
+  min-width: 56px;
+  color: var(--text);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@include reduced-motion {
+  .viewer {
+    animation: none;
+  }
+}

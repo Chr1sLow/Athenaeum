@@ -1,0 +1,11 @@
+.switch {
+  margin: 24px 0 0;
+  text-align: center;
+
+  a {
+    color: var(--text-strong);
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+}

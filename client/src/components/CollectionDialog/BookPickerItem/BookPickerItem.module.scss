@@ -1,0 +1,46 @@
+@use '../../../styles/mixins' as *;
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--surface);
+  }
+
+  input {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
+  }
+}
+
+.thumb {
+  flex-shrink: 0;
+  width: 30px;
+  height: 45px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--surface-hover);
+}
+
+.text {
+  display: grid;
+  min-width: 0;
+}
+
+.title {
+  @include ellipsis;
+  color: var(--text-strong);
+}
+
+.author {
+  @include ellipsis;
+  color: var(--text-muted);
+  font-size: 13px;
+}

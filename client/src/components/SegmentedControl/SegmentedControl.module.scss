@@ -1,0 +1,25 @@
+@use '../../styles/mixins' as *;
+
+.root {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.label {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.options {
+  @include segmented;
+}
+
+.option {
+  display: grid;
+  place-items: center;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0 12px;
+}

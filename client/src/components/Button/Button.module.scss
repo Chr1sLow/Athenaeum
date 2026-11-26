@@ -1,0 +1,90 @@
+@use '../../styles/mixins' as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-strong);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 120ms var(--ease);
+
+  &:hover:not(:disabled) {
+    background: var(--surface-hover);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+.primary {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--accent-contrast);
+
+  &:hover:not(:disabled) {
+    background: var(--accent-hover);
+  }
+}
+
+.danger:hover:not(:disabled) {
+  border-color: var(--danger);
+  color: var(--danger-text);
+}
+
+.icon {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+}
+
+// Square, borderless, icon only.
+.iconOnly {
+  width: 42px;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  color: var(--text);
+
+  &:hover:not(:disabled) {
+    background: var(--surface);
+    color: var(--text-strong);
+  }
+}
+
+// Accent text with no box, like a link: "Edit row" in the admin console.
+.text {
+  padding: 0 10px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--accent-hover);
+
+  &:hover:not(:disabled) {
+    background: var(--surface-sunken);
+  }
+}
+
+.large {
+  height: 46px;
+}
+
+.fullWidth {
+  width: 100%;
+  min-width: 0;
+
+  &.iconEnd {
+    justify-content: space-between;
+  }
+}
+
+.label {
+  @include ellipsis;
+}

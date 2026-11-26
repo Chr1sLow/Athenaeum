@@ -1,0 +1,100 @@
+@use '../../../styles/mixins' as *;
+
+.row {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  transition: background 120ms var(--ease);
+
+  &:hover {
+    background: var(--surface);
+  }
+}
+
+.link {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding: 10px 6px 10px 12px;
+  color: var(--text-strong);
+  text-decoration: none;
+}
+
+.title {
+  @include ellipsis;
+  font-size: 16px;
+
+  .link[aria-current='step'] & {
+    color: var(--accent-hover);
+  }
+
+  .isRead & {
+    color: var(--text-muted);
+  }
+}
+
+.meta {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.reading {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 600;
+}
+
+// A big hit area around a small custom checkbox.
+.check {
+  position: relative;
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 40px;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  span {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: var(--surface);
+    color: transparent;
+  }
+
+  input:checked + span {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--accent-contrast);
+  }
+
+  input:focus-visible + span {
+    box-shadow: var(--focus-ring);
+  }
+}
+
+@include below(lg) {
+  .meta {
+    display: none;
+  }
+}

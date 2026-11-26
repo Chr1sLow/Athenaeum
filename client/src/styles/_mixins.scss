@@ -1,0 +1,85 @@
+// Compile-time helpers only. Anything a theme can change (colors, radii, spacing) is a CSS
+// variable in tokens.scss instead. Use with `@use '../../styles/mixins' as *;`.
+@use 'sass:map';
+
+$breakpoints: (
+  xs: 480px,
+  sm: 560px,
+  md: 640px,
+  lg: 720px,
+);
+
+// Styles for screens at or below a breakpoint: `@include below(lg) { ... }`.
+@mixin below($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error 'Unknown breakpoint `#{$name}`. Expected one of #{map.keys($breakpoints)}.';
+  }
+
+  @media (max-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// One line, cut off with "…". The element (or its flex/grid parent) needs a bounded width.
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Small caps labels, like atsu's TYPE / STATUS / AUTHOR.
+@mixin eyebrow {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+// A text input inside a pill-shaped search/filter box that draws the field itself.
+@mixin bare-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text-strong);
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+// Rounded strip of toggle buttons; the pressed one looks raised.
+@mixin segmented {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+
+  button {
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text);
+    font-size: 15px;
+
+    &:hover {
+      color: var(--text-strong);
+    }
+
+    &[aria-pressed='true'] {
+      background: var(--bg);
+      color: var(--text-strong);
+    }
+  }
+}

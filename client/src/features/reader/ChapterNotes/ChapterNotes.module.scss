@@ -1,0 +1,28 @@
+// Footnotes: smaller and quieter than the text, under a short rule at the left, as in print.
+.notes {
+  margin-top: calc(var(--r-paragraph-spacing) * 3);
+  padding-top: var(--r-paragraph-spacing);
+  border-top: 1px solid var(--r-muted);
+  border-image: linear-gradient(to right, var(--r-muted) 30%, transparent 30%) 1;
+  color: var(--r-muted);
+  font-size: 0.82em;
+  line-height: 1.5;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.note {
+  margin: 0 0 calc(var(--r-paragraph-spacing) * 0.6);
+  overflow-wrap: break-word;
+}
+
+// The number, raised like the marker in the text.
+.label {
+  font-size: 0.75em;
+  font-variant-numeric: tabular-nums;
+  vertical-align: super;
+}

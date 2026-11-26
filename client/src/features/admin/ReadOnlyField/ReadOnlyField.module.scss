@@ -1,0 +1,25 @@
+@use '../../../styles/mixins' as *;
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  @include eyebrow;
+}
+
+.note {
+  font-weight: 400;
+  text-transform: none;
+}
+
+.value {
+  max-height: 120px;
+  margin: 0;
+  overflow: auto;
+  color: var(--text);
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}

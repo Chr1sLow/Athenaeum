@@ -1,0 +1,16 @@
+.filters {
+  display: grid;
+  gap: 10px;
+  padding: 4px 0 6px;
+}
+
+.sort {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+
+  > :first-child {
+    flex: 1;
+    min-width: 0;
+  }
+}

@@ -1,0 +1,23 @@
+@use '../../../styles/mixins' as *;
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.search {
+  flex: 0 1 220px;
+  min-width: 140px;
+}
+
+.order {
+  margin-left: auto;
+}
+
+@include below(lg) {
+  .order {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,99 @@
+@use '../../../styles/mixins' as *;
+
+.card {
+  position: relative;
+  min-width: 0;
+}
+
+.link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+// Rounded 2:3 cover that lifts slightly on hover.
+.cover {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: transform 160ms var(--ease);
+
+  .card:hover & {
+    transform: translateY(-2px);
+  }
+}
+
+// The "…" options button in the cover's top-right corner. Hidden until the card is hovered or
+// tabbed into, and kept while its menu is open.
+.menu {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  opacity: 0;
+  transition: opacity 120ms var(--ease);
+
+  .card:hover &,
+  .card:focus-within &,
+  &:has([aria-expanded='true']) {
+    opacity: 1;
+  }
+}
+
+.chips {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  display: flex;
+  gap: 4px;
+}
+
+.chip {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--overlay);
+  color: var(--chip-text);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+// Format colors, like atsu's Manga / Manhwa / Novel chips.
+@each $format in epub, pdf, docx, txt {
+  .#{$format} {
+    background: var(--format-#{$format});
+  }
+}
+
+.title {
+  display: -webkit-box;
+  margin-top: 10px;
+  overflow: hidden;
+  color: var(--text-strong);
+  font-size: 15px;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.author {
+  @include ellipsis;
+  margin: 2px 0 0;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.when {
+  margin: 2px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+// Touch screens can't hover, so the options button is always shown there.
+@media (hover: none) {
+  .menu {
+    opacity: 1;
+  }
+}

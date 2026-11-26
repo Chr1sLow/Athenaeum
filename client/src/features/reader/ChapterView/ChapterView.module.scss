@@ -1,0 +1,19 @@
+@use '../../../styles/mixins' as *;
+
+// atsu.moe's reader column: centered, about 66 characters wide, typography from the --r-* variables.
+.chapter {
+  max-width: var(--r-measure);
+  margin: 0 auto;
+  padding-top: 72px;
+  font-family: var(--r-font);
+  font-size: var(--r-size);
+  font-weight: var(--r-weight);
+  line-height: var(--r-line-height);
+  letter-spacing: var(--r-letter-spacing);
+}
+
+@include below(md) {
+  .chapter {
+    padding-top: 64px;
+  }
+}

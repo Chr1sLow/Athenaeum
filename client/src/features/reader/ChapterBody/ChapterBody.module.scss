@@ -1,0 +1,57 @@
+.body {
+  p {
+    margin: 0 0 var(--r-paragraph-spacing);
+    text-align: var(--r-align);
+    text-indent: var(--r-indent);
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+
+  // Footnote numbers: raised without pushing the line apart.
+  sup {
+    font-size: 0.7em;
+    line-height: 0;
+  }
+
+  h2,
+  h3,
+  h4 {
+    margin: calc(var(--r-paragraph-spacing) * 2) 0 var(--r-paragraph-spacing);
+    color: var(--r-heading);
+    font-family: var(--r-font);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  h2 {
+    font-size: 1.15em;
+  }
+
+  h3 {
+    font-size: 1.05em;
+  }
+
+  h4 {
+    font-size: 1em;
+  }
+
+  // Scene break: a short centered rule.
+  hr {
+    width: 64px;
+    margin: calc(var(--r-paragraph-spacing) * 2) auto;
+    border: 0;
+    border-top: 1px solid var(--r-muted);
+    opacity: 0.6;
+  }
+
+  figure {
+    margin: calc(var(--r-paragraph-spacing) * 1.5) 0;
+    text-align: center;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 4px;
+  }
+}

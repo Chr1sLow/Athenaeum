@@ -1,0 +1,50 @@
+.root {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 96px 0;
+  text-align: center;
+}
+
+.plain {
+  // Centered text only.
+  color: inherit;
+}
+
+.outlined {
+  padding: 64px 24px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+.card {
+  max-width: 440px;
+  margin: 64px auto;
+  padding: 40px 24px;
+  border-radius: var(--radius);
+  background: var(--surface-sunken);
+}
+
+.icon {
+  display: grid;
+  color: var(--accent);
+}
+
+.title {
+  font-size: 20px;
+
+  .card & {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+  }
+}
+
+.message {
+  max-width: 420px;
+  margin: 0;
+
+  .outlined & {
+    color: var(--text-muted);
+  }
+}

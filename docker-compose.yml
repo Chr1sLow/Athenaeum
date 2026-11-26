@@ -1,0 +1,113 @@
+# One command runs everything:   docker compose up
+# Then open http://localhost:5173.  Stop with Ctrl+C, or `docker compose down` if started with -d.
+
+name: athenaeum
+
+# Shared settings for the Node containers. They run the stock Node image with this folder
+# mounted, so code edits reload live and there's no custom image to build.
+x-node: &node
+  image: node:22-alpine
+  working_dir: /app
+  env_file: .env
+  environment: &node-env
+    PATH: /app/node_modules/.bin:/usr/local/bin:/usr/bin:/bin
+  volumes:
+    - .:/app
+    # Linux packages live in a Docker volume, separate from your Windows node_modules.
+    - athenaeum-node-modules:/app/node_modules
+    - /app/server/node_modules
+    - /app/client/node_modules
+
+services:
+  db:
+    image: postgres:17
+    container_name: athenaeum-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-athenaeum}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env (copy .env.example)}
+      POSTGRES_DB: ${POSTGRES_DB:-athenaeum}
+    ports:
+      # Localhost only: other machines on the network cannot reach the database.
+      # Published so `npm test` and `npm run dev` on the host can use it too.
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - athenaeum-pg:/var/lib/postgresql/data
+      # Runs once, on first start with an empty volume: creates the test database.
+      - ./server/db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Installs npm packages, but only when package-lock.json has changed since the last install.
+  deps:
+    <<: *node
+    container_name: athenaeum-deps
+    command:
+      - sh
+      - -c
+      - |
+        hash=$$(sha1sum package-lock.json | cut -d' ' -f1)
+        if [ "$$(cat node_modules/.lock-hash 2>/dev/null)" = "$$hash" ]; then
+          echo "Packages are up to date."
+        else
+          # Remove the marker first: docker/supervise.sh stops the server and client until it's back.
+          rm -f node_modules/.lock-hash
+          npm ci --no-audit --no-fund && echo "$$hash" > node_modules/.lock-hash
+        fi
+
+  server:
+    <<: *node
+    container_name: athenaeum-server
+    restart: unless-stopped
+    # Starts the API with auto-reload (it applies any new database migrations as it starts).
+    # supervise.sh restarts it if npm packages are reinstalled while it runs.
+    working_dir: /app/server
+    command: sh /app/docker/supervise.sh tsx watch src/index.ts
+    environment:
+      <<: *node-env
+      DATABASE_URL: postgres://${POSTGRES_USER:-athenaeum}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-athenaeum}
+      # Listens on the private container network. The port isn't published, so only the client container reaches it.
+      HOST: 0.0.0.0
+      PORT: 3001
+      # File-change events don't cross from Windows into containers, so the watcher polls.
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+      deps:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3001/api/health >/dev/null || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  client:
+    <<: *node
+    container_name: athenaeum-client
+    restart: unless-stopped
+    working_dir: /app/client
+    command: sh /app/docker/supervise.sh vite
+    environment:
+      <<: *node-env
+      VITE_HOST: 0.0.0.0
+      API_PROXY_TARGET: http://server:3001
+      VITE_POLL: "true"
+    ports:
+      # The app, on this computer only.
+      - "127.0.0.1:5173:5173"
+    depends_on:
+      deps:
+        condition: service_completed_successfully
+      server:
+        condition: service_healthy
+
+volumes:
+  athenaeum-pg:
+    name: athenaeum-pg
+  athenaeum-node-modules:
+    name: athenaeum-node-modules

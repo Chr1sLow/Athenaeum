@@ -1,0 +1,32 @@
+@use '../../styles/mixins' as *;
+
+.details {
+  padding-top: 8px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.main {
+  min-width: 0;
+}
+
+.description {
+  margin: 0;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-strong);
+  line-height: 1.55;
+  white-space: pre-line;
+}
+
+@include below(lg) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
