@@ -1,5 +1,5 @@
 import type { BookSummary } from '@athenaeum/shared';
-import { Ellipsis, Trash2, Pin } from 'lucide-react';
+import { Ellipsis, Trash2, Pin, PinOff } from 'lucide-react';
 import { useDeleteBook, usePinBook } from '../../../api/books.ts';
 import { type MenuItem, Menu } from '../../../components/Menu/Menu.tsx';
 
@@ -19,15 +19,15 @@ export function BookCardMenu({ book }: BookCardMenuProps) {
     });
   };
 
-  const pinBook = () => {
+  const handlePin = () => {
     pin.mutate({ pinned: !book.pinned });
   }
 
   const items: MenuItem[] = [
     {
-      label: 'Pin',
-      icon: <Pin size={16} />,
-      onSelect: pinBook,
+      label: book.pinned ? 'Unpin' : 'Pin',
+      icon: book.pinned ? <PinOff size={16} /> : <Pin size={16} />,
+      onSelect: handlePin,
     },
     {
       label: 'Delete',

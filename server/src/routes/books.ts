@@ -306,4 +306,14 @@ export const booksRoutes: FastifyPluginAsync<BooksRoutesOptions> = async (app, o
     }
     return reply.code(204).send();
   });
+
+  app.put<{ Params: { id: string } }>('/books/:id/pin', async (req, reply) => {
+    const summary = await findOwned(app.db, req.user!.id, req.params.id);
+    if (!summary) return notFound(reply);
+      const body = z.object({ pinned: z.boolean() }).safeParse(req.body);  
+    if (!body.success) return reply.code(400).send({ error: 'Invalid request' });
+    
+    await app.db.update(books).set({ pinned: body.data.pinned }).where(eq(books.id, summary.id)  );
+    return reply.code(204).send  ();
+  });
 };

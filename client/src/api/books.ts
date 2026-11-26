@@ -53,13 +53,14 @@ export function useMarkRead(id: string) {
   });
 }
 
-/** Pints or unpins a book for a user */
+/** Pins or unpins a book for a user */
 export function usePinBook(id: string) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ pinned }: { pinned: boolean }) => api<void>(`/books/${id}/pin`, { method: 'PUT', json: { pinned } }),
     onSuccess: (_data, { pinned }) => {
       qc.setQueryData<BookDetail>(bookKey(id), (old) => old ? { ...old, pinned } : old);
+      qc.invalidateQueries({ queryKey: BOOKS_KEY });
     },
   });
 }
